@@ -1,4 +1,4 @@
-# Overlay for the NKP (Kommander) Project "hydra-lite".
+# Overlay for the NKP (Kommander) Project "hydra-demo".
 #
 # Added through the project's Continuous Deployment tab as a GitOps Source with
 # path ./deploy/envs/project. Kommander deploys it into the project namespace
@@ -12,7 +12,7 @@
 # CI updates the image tags below on every merge to main, same as prod.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: hydra-lite
+namespace: hydra-demo
 resources:
   - ../../base
 images:
