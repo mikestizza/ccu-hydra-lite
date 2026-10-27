@@ -12,7 +12,7 @@
 # CI updates the image tags below on every merge to main, same as prod.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: hydra-lite-6mg6s
+namespace: hydra-lite
 resources:
   - ../../base
 images:
@@ -49,30 +49,10 @@ patches:
       - op: replace
         path: /spec/ingressClassName
         value: kommander-traefik
+      # One cluster in the project: cluster-vm (workspace emea-prod), Traefik 10.38.207.161
       - op: replace
         path: /spec/rules/0/host
-        value: hydra-project.10.38.207.251.sslip.io
+        value: hydra-project.10.38.207.161.sslip.io
       - op: replace
         path: /spec/tls/0/hosts/0
-        value: hydra-project.10.38.207.251.sslip.io
-      # The project spans two clusters (stizlab and stizlab2). Kommander applies this same
-      # Ingress on both, so it lists both clusters' hostnames. Each name resolves to its
-      # own cluster's Traefik IP, so the other cluster's rule is never hit.
-      #   stizlab  Traefik 10.38.207.251  ->  hydra-project.10.38.207.251.sslip.io
-      #   stizlab2 Traefik 10.38.207.248  ->  hydra-project.10.38.207.248.sslip.io
-      - op: add
-        path: /spec/tls/0/hosts/-
-        value: hydra-project.10.38.207.248.sslip.io
-      - op: add
-        path: /spec/rules/-
-        value:
-          host: hydra-project.10.38.207.248.sslip.io
-          http:
-            paths:
-              - path: /
-                pathType: Prefix
-                backend:
-                  service:
-                    name: hydra-web
-                    port:
-                      name: http
+        value: hydra-project.10.38.207.161.sslip.io
